@@ -21,15 +21,24 @@ def word_freq(words):
     return freq
 
 
+def top_words(freq, k=3):
+    """k найчастіших слів: спершу за частотою (спадання), при рівності — за абеткою."""
+    pairs = sorted(freq.items(), key=lambda p: (-p[1], p[0]))
+    return pairs[:k]
+
+
 def word_stats(text):
-    """Повертає (кількість слів, кількість різних слів)."""
+    """Повертає (кількість слів, кількість різних слів, три найчастіші)."""
     words = clean_words(text)
     freq = word_freq(words)
-    return len(words), len(freq)
+    return len(words), len(freq), top_words(freq, 3)
 
 
 if __name__ == "__main__":
     sentence = input("Введіть речення: ")
-    total, distinct = word_stats(sentence)
+    total, distinct, top = word_stats(sentence)
     print("Слів:", total)
     print("Різних слів:", distinct)
+    print("Три найчастіші:")
+    for word, count in top:
+        print(f"  {word} — {count}")
